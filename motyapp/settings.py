@@ -38,6 +38,7 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'motyapi',
+    'motyapp',
 ]
 
 MIDDLEWARE = [
@@ -80,7 +81,7 @@ DATABASES = {
         'NAME': 'moty',
         'USER': 'webadmin',
         'PASSWORD': 'J7dsTbhk',
-        'HOST': 'ec2-52-15-139-43.us-east-2.compute.amazonaws.com',
+        'HOST': 'ec2-18-188-31-182.us-east-2.compute.amazonaws.com',
         'PORT': '3306',
         'OPTIONS': {'charset':'utf8mb4'},
     }
