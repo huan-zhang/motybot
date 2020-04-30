@@ -1,6 +1,7 @@
 from django.shortcuts import render
 from django.views.generic import TemplateView
 from django.http import JsonResponse
+from django.views.decorators.csrf import csrf_exempt
 
 from motyapp.models import BotResponse
   
@@ -9,6 +10,7 @@ class HomePageView(TemplateView):
         return render(request, 'index.html', context=None)
 
 class BotResponseView:
+    @csrf_exempt
     def get_bot_responses(request):
         try:
             responses = BotResponse.objects.all();
