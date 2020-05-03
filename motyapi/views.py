@@ -6,7 +6,7 @@ import boto3
 import json
 import requests
 
-from motyapp.models import BotResponse
+from motyapp.models import BotResponse, BotParam
 
 
 REGION = 'us-west-2'
@@ -119,7 +119,7 @@ class BotResponseView:
                 print (msg_txt);
                 if msg_txt.startswith('/'):
                     print ("this is a command:::");
-                    result_text = BotResponseView.handle_command(msg_txt[1:].split(' '));
+                    result_text = BotResponseView.handle_command(msg_txt[1:].split(' '), chat_id);
                 payload = {
                     "method": "sendMessage",
                     "chat_id": chat_id,
@@ -149,11 +149,16 @@ class BotResponseView:
             pass;
         
     @staticmethod
-    def handle_command(param):
+    def handle_command(param, chat_id):
         return_text  = "Hey!"
         command = param.pop(0); 
         if 'TR' == command:
             return_text = BotResponseView.translate_to_chinese(' '.join([str(i) for i in param]));
+        elif "TW" == command:
+             tw_param = BotParam.objects.get(param_key = 'chat_id');
+             tw_param.param_val = chat_id;
+             tw_param.save();
+             return_text = 'Bot Param chat_id: ' + chat_id + ' is saved.';
         else:
             return_text = BotResponseView.get_bot_response(command);
         return return_text;

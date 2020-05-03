@@ -21,3 +21,15 @@ class BotResponse(models.Model):
     class Meta:
         managed = True
         db_table = 'bot_response'
+        
+class BotParam(models.Model):
+    bot_param_id = models.AutoField(primary_key=True)
+    param_key = models.TextField()
+    param_val = models.TextField()
+    
+    def to_json(self):
+        return {"bot_param_id":self.bot_param_id, "param_key":self.param_key, "param_val" : self.param_val}
+
+    class Meta:
+        managed = True
+        db_table = 'bot_param'
