@@ -111,6 +111,7 @@ class BotResponseView:
         payload = {};
         try:
             message = data['message'];
+            chat_id = str(message['chat']['id']);
             result_text = "hey, " + message['from']['first_name'] + " " + message['from']['last_name'];
             
             if 'text' in message:
@@ -121,25 +122,25 @@ class BotResponseView:
                     result_text = BotResponseView.handle_command(msg_txt[1:].split(' '));
                 payload = {
                     "method": "sendMessage",
-                    "chat_id": "" + message['chat']['id'],
+                    "chat_id": chat_id,
                     "text": result_text,
                 };
             elif 'sticker' in message:
                 payload = {
                     "method": "sendMessage",
-                    "chat_id": "" + message['message']['chat']['id'],
+                    "chat_id": chat_id,
                     "sticker": message['sticker']['file_id'],
                 };
             elif 'photo' in message:
                 payload = {
                     "method": "sendMessage",
-                    "chat_id": "" + message['message']['chat']['id'],
+                    "chat_id": chat_id,
                     "photo": message['photo']['file_id'],
                 };
             else:            
                 payload = {
                     "method": "sendMessage",
-                    "chat_id": "" + message['chat']['id'],
+                    "chat_id": chat_id,
                     "text": "Unknowm message type.",
                 };
             return payload;
