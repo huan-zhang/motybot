@@ -163,3 +163,29 @@ class BotResponseView:
             return_text = BotResponseView.get_bot_response(command);
         return return_text;
             
+    @staticmethod
+    @csrf_exempt
+    def send_tweet(request):
+        
+        payload = {};
+        try:
+            post_data = json.loads(request.body);
+            print(post_data);
+            tweet_txt = post_data["tweet"];
+            tw_param = BotParam.objects.get(param_key = 'chat_id');
+            chat_id = tw_param.param_val;
+            payload = {
+                "method": "sendMessage",
+                "chat_id": chat_id,
+                "text": "Orig Tweet: " + tweet_txt + "Transfered Tweet: " + BotResponseView.translate_to_chinese(tweet_txt),
+            };   
+            resp = requests.post(BOT_ENDPOINT, payload);
+            if (resp.ok):
+                print(resp.text)
+                result_json = json.loads(resp.text);
+                return JsonResponse(result_json, status=200, safe=False)
+            else:
+                return JsonResponse({'status':'false','message':'Getting bot responses failed.'}, status=400)
+        except Exception as e:
+            print(e)
+            pass;
