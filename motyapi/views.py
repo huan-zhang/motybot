@@ -108,6 +108,7 @@ class BotResponseView:
     
     @staticmethod
     def prepare_payload(data):
+        payload = {};
         try:
             message = data['message'];
             result_text = "hey, " + message['from']['first_name'] + " " + message['from']['last_name'];
@@ -115,7 +116,7 @@ class BotResponseView:
             if 'text' in message:
                 msg_txt = message['text'].upper();
                 print (msg_txt);
-                if 0 == msg_txt.index('/'):
+                if msg_txt.startswith('/'):
                     print ("this is a command:::");
                     result_text = BotResponseView.handle_command(msg_txt[1:].split(' '));
                 payload = {
@@ -144,7 +145,7 @@ class BotResponseView:
             return payload;
         except Exception as e:
             print(e)
-            return payload;
+            pass;
         
     @staticmethod
     def handle_command(param):
